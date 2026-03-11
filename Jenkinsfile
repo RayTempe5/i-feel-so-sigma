@@ -1,5 +1,11 @@
+
 pipeline {
     agent any
+
+    environment {
+        PRODUCTION_SERVER = "${env.PRODUCTION_SERVER}"
+        APP_ENV = "${env.APP_ENV}"
+    }
 
     stages {
         stage('Checkout') {
@@ -17,13 +23,14 @@ pipeline {
         stage('Testing') {
             steps {
                 sh 'echo Running tests...'
-                sh 'echo PHP test skipped - no PHP in container'
+                sh 'echo PHP test skipped'
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploy selesai!'
+                sh 'echo Deploy ke server $PRODUCTION_SERVER'
+                sh 'echo Environment: $APP_ENV'
             }
         }
     }
@@ -33,7 +40,7 @@ pipeline {
             echo 'Pipeline Berhasil!'
         }
         failure {
-            echo 'Pipeline Gagal! Cek Console Output.'
+            echo 'Pipeline Gagal!'
         }
     }
 }
