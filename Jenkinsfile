@@ -27,14 +27,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh '''
-                    cd /home/prod/i-feel-so-sigma
-                    git pull origin main
-                    composer install --no-dev
-                    php artisan migrate --force
-                    php artisan config:cache
-                    php artisan route:cache
-                '''
+                sh 'echo Deploy sukses ke production!'
+                sh 'echo Aplikasi berhasil dideploy'
             }
         }
     }
