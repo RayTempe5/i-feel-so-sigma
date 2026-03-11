@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -23,24 +22,29 @@ pipeline {
         stage('Testing') {
             steps {
                 sh 'echo Running tests...'
-                sh 'echo PHP test skipped'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'echo Deploy ke server $PRODUCTION_SERVER'
-                sh 'echo Environment: $APP_ENV'
+                sh '''
+                    cd /home/prod/i-feel-so-sigma
+                    git pull origin main
+                    composer install --no-dev
+                    php artisan migrate --force
+                    php artisan config:cache
+                    php artisan route:cache
+                '''
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline Berhasil!'
+            echo 'Deploy Berhasil!'
         }
         failure {
-            echo 'Pipeline Gagal!'
+            echo 'Deploy Gagal!'
         }
     }
 }
