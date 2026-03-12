@@ -22,13 +22,15 @@ pipeline {
         stage('Testing') {
             steps {
                 sh 'echo Running tests...'
+                sh 'echo PHP test skipped'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'echo Deploy sukses ke production!'
-                sh 'echo Aplikasi berhasil dideploy'
+                sshagent(credentials: ['ssh-prod']) {
+                    sh 'ssh -o StrictHostKeyChecking=no ray@172.23.134.44 "echo SSH Jenkins berhasil!"'
+                }
             }
         }
     }
